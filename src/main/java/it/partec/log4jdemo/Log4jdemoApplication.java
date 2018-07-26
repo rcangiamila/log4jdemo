@@ -32,7 +32,15 @@ public class Log4jdemoApplication implements ApplicationRunner {
     public void asyncWriteLog() throws Exception {
         Random random = new Random();
         while (true) {
-            log.info(loremIpsum.getHtmlParagraphs(2, 4));
+
+            StringBuilder builder = new StringBuilder();
+
+            for (int i = 0;i<10;i++) {
+                builder.append(loremIpsum.getParagraphs(2, 4));
+            }
+
+            log.info(builder.toString());
+
             Thread.currentThread().sleep((random.nextInt(10) + 1) * 1000);
         }
     }
