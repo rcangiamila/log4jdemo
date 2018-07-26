@@ -1,14 +1,22 @@
 package it.partec.log4jdemo;
 
+import com.thedeanda.lorem.Lorem;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.Async;
+
+import java.util.Random;
 
 @Log4j2
 @SpringBootApplication
 public class Log4jdemoApplication implements ApplicationRunner {
+
+    @Autowired
+    private Lorem loremIpsum;
 
     public static void main(String[] args) {
 
@@ -17,10 +25,15 @@ public class Log4jdemoApplication implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments applicationArguments) throws Exception {
-        log.debug("Debugging log");
-        log.info("Info log");
-        log.warn("Hey, This is a warning!");
-        log.error("Oops! We have an Error. OK");
-        log.fatal("Damn! Fatal error. Please fix me.");
+        asyncWriteLog();
+    }
+
+    @Async
+    public void asyncWriteLog() throws Exception {
+        Random random = new Random();
+        while (true) {
+            log.info(loremIpsum.getHtmlParagraphs(2, 4));
+            Thread.currentThread().sleep((random.nextInt(10) + 1) * 1000);
+        }
     }
 }
